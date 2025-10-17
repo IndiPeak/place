@@ -36,6 +36,10 @@ dependencies:
   cupertino_icons: ^1.0.8
   permission_handler: ^12.0.1
   yandex_maps_mapkit_lite: ^4.24.0-beta
+  geolocator: ^14.0.2
+  flutter_sms_inbox: ^1.0.4
+  url_launcher: ^6.3.2
+  mask_text_input_formatter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
@@ -53,7 +57,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/icons/pin.png
 
+  fonts:
+    - family: Sans
+      fonts:
+        - asset: assets/fonts/GeneralSans-Bold.otf
+          weight: 600
+        - asset: assets/fonts/GeneralSans-Medium.otf
+          weight: 500
+        - asset: assets/fonts/GeneralSans-Regular.otf
+          weight: 400
+        - asset: assets/fonts/GeneralSans-Semibold.otf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gl/pages/all_chats_page.dart';
 import 'package:yandex_maps_mapkit_lite/init.dart' as init;
-import 'package:gl/pages/chats_page.dart';
 
 
 void main() async {
@@ -16,10 +16,11 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      title: 'Place',
+      
       debugShowCheckedModeBanner: false,
-      home: ChatsPage(),
+      home: AllChatsPage(),
     );
   }
 }
-
