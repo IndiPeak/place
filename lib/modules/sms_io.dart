@@ -3,23 +3,32 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<List<SmsMessage>> getInboxSms() async {
+Future<List<SmsMessage>> getInboxSms(String phone) async {
   var permission = await Permission.sms.status;
   if (permission.isGranted) {
-    return await SmsQuery().getAllSms; 
+    return await SmsQuery().querySms(address: phone); 
   }
   else {
     await Permission.sms.request();
-    return await SmsQuery().getAllSms; 
+    return await SmsQuery().querySms(address: phone); 
   }
 }
 
-Future<void> sendSmsCoordinates(String phoneNumber, Position coordinates) async {
+Future<bool> sendSmsCoordinates(String phoneNumber, Position coordinates) async {
+  double latitude = coordinates.latitude;
+  double longitude = coordinates.longitude;
+  String message = "!$latitude#$longitude";
+
   final Uri smsUri = Uri(
     scheme: 'sms',
     path: phoneNumber,
-    queryParameters: {'body': coordinates.toString()},
+    queryParameters: {'body': message},
   );
 
-  await launchUrl(smsUri, mode: LaunchMode.externalApplication);
+  if (!await launchUrl(smsUri, mode: LaunchMode.externalApplication)) {
+    return true;
+  }
+  else {
+    return false;
+  }
 }

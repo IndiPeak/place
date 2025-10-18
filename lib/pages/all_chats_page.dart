@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gl/modules/app_colors.dart';
+import 'package:gl/modules/phone.dart';
 import 'package:gl/pages/chat_page.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -173,15 +174,16 @@ class _AllChatsPageState extends State<AllChatsPage> {
   }
 
   Widget _buildContact(String phone) {
+    Phone.phone = phone;
     return ListTile(
       onTap: () => {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => ChatPage(),
             transitionDuration: Duration.zero,
-            settings: RouteSettings(
-              arguments: phone
-            )
+            // settings: RouteSettings(
+            //   arguments: phone
+            // )
           ),
         )
       },
@@ -207,7 +209,7 @@ class _AllChatsPageState extends State<AllChatsPage> {
         ),
       ),
       subtitle: Text(
-        "send to this",
+        "something",
         style: TextStyle(
           fontFamily: 'Sans', 
           fontSize: 13.0,

@@ -5,5 +5,6 @@ class LightTheme {
   static const accent = Color.fromARGB(255, 91, 44, 54);
   static const background = Color.fromARGB(255, 230, 223, 215);
   static const primaryText = Color.fromARGB(255, 31, 62, 67);
+  static const primaryBack = Color.fromARGB(255, 66, 30, 48);
   static const gray = Color.fromARGB(255, 151, 151, 151);
 }
