@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<List<SmsMessage>> getInboxSms(String phone) async {
+Future<List<SmsMessage>> getInboxSmsByPhone(String phone) async {
   var permission = await Permission.sms.status;
   if (permission.isGranted) {
     return await SmsQuery().querySms(address: phone); 
@@ -11,6 +11,17 @@ Future<List<SmsMessage>> getInboxSms(String phone) async {
   else {
     await Permission.sms.request();
     return await SmsQuery().querySms(address: phone); 
+  }
+}
+
+Future<List<SmsMessage>> getInboxSms() async {
+  var permission = await Permission.sms.status;
+  if (permission.isGranted) {
+    return await SmsQuery().querySms(); 
+  }
+  else {
+    await Permission.sms.request();
+    return await SmsQuery().querySms(); 
   }
 }
 

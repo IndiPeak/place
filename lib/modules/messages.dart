@@ -7,5 +7,6 @@ class MessagesHistory {
 class Message {
   DateTime? mTime;
   Point? mapPoint;
-  Message(this.mTime, this.mapPoint);
+  bool? isSent;
+  Message(this.mTime, this.mapPoint, this.isSent);
 }

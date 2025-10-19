@@ -29,21 +29,27 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Future<void> _loadOriginMessages() async {
-    List<SmsMessage> m = await getInboxSms(Phone.phone!);
+    List<SmsMessage> m = await getInboxSmsByPhone(Phone.phone!);
     setState(() {
       _originMessages = m;
     });
-    for (var sms in _originMessages) {
+    for (SmsMessage sms in _originMessages) {
+      bool isSent = false;
       if (sms.body?[0] == "!") {
         List<String>? coord = sms.body?.split("#"); 
-        Message message = Message(sms.dateSent, Point(latitude: coord?[0] as double, longitude: coord?[1] as double));
+        if (sms.kind == SmsMessageKind.sent) {
+          isSent = true;
+        }
+        Message message = Message(sms.dateSent, Point(latitude: coord?[0] as double, longitude: coord?[1] as double), isSent);
         MessagesHistory.messages.add(message);
       }
     }
 
 
     for (Message message in MessagesHistory.messages) {
-      mapsMessagesDynamic.add(_buidMessage(message.mapPoint, false, message.mTime));
+      setState(() {
+        mapsMessagesDynamic.add(_buidMessage(message.mapPoint, message.isSent!, message.mTime));
+      });
     }
   }
 
@@ -52,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String phone = Phone.phone!;
+    final String? phone = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       backgroundColor: LightTheme.background,
       appBar: AppBar(
@@ -64,7 +70,7 @@ class _ChatPageState extends State<ChatPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              phone,
+              phone!,
               style: TextStyle(
                 fontFamily: 'Sans', 
                 fontSize: 17.0,
@@ -185,7 +191,7 @@ class _ChatPageState extends State<ChatPage> {
                 ),
               ]
             )
-          ),
+          ), 
         )
       )
     );

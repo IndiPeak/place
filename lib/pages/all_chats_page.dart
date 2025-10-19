@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 import 'package:gl/modules/app_colors.dart';
 import 'package:gl/modules/phone.dart';
+import 'package:gl/modules/sms_io.dart';
 import 'package:gl/pages/chat_page.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -19,6 +21,26 @@ class _AllChatsPageState extends State<AllChatsPage> {
   void dispose() {
     _controller.dispose(); // Dispose of the controller when the widget is removed
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+    _loadOriginMessages();
+  }
+
+  Future<void> _loadOriginMessages() async {
+    List<SmsMessage> m = await getInboxSms();
+
+    for (SmsMessage sms in m) {
+      if (sms.body?[0] == "!") {
+        Phone.phone = sms.address;
+        setState(() {
+          _contactsDynamic.add(_buildContact(sms.address!));
+        });
+      }
+    }
   }
 
   @override
@@ -174,16 +196,15 @@ class _AllChatsPageState extends State<AllChatsPage> {
   }
 
   Widget _buildContact(String phone) {
-    Phone.phone = phone;
     return ListTile(
       onTap: () => {
         Navigator.of(context).push(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => ChatPage(),
             transitionDuration: Duration.zero,
-            // settings: RouteSettings(
-            //   arguments: phone
-            // )
+            settings: RouteSettings(
+              arguments: phone
+            )
           ),
         )
       },
